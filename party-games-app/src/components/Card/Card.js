@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import './Card.css';
+import './card.css';
 
 const Card = props => {
 
@@ -11,11 +11,15 @@ const Card = props => {
       </div>
       
       <div className="card-body text-dark">
-        <h4 className="card-title">Camera: { props.course.id }</h4>
-        <p className="card-text text-secondary">
-          Admin: { props.course.admin }
-        </p>
-        <Link className="btn btn-outline-success" to={{pathname: `/subject/${props.course.name}`}}> More info </Link>
+        <h4 className="card-title">Camera: { props.room.name }</h4>
+        <p className="card-text text-secondary"> Game: { props.room.game } </p>
+        <p className="card-text text-secondary"> Game state: { props.room.state } </p>
+        <p className="card-text text-secondary"> Room type: { props.room.type } </p>
+        <p className="card-text text-secondary"> Admin: { props.room.admin_name } </p>
+        <p className="card-text text-secondary"> Users number: { props.room.current_users_number } </p>
+        <p className="card-text text-secondary"> Max users number: { props.room.max_users_number } </p>
+        
+        <Link className="btn btn-outline-success" to={{pathname: `/room/${props.id}`}}> More info </Link>
       </div>
     </div>
   );

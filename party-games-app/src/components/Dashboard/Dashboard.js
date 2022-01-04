@@ -1,24 +1,35 @@
 import React, { Component} from 'react';
-import Card from '../Card/Card';
-import './Dashboard.css';
+import Card from '../card/card';
+import './dashboard.css';
 import img1 from './react-logo.png';
-import { database, auth } from "../../firebase";
+import { database } from "../../firebase";
+
 class Dashboard extends Component{
     constructor(props) {
         super(props);
+
         this.state = {
             rooms: []
         }
     }
+
     async componentDidMount() {
         let roomsList = [];
-        
         const roomsRefs = database.ref('rooms');
+
         await roomsRefs.on('value', snapshot => {
             snapshot.forEach(childSnapshot => {
                 const childData = childSnapshot.val();
-                roomsList.push(childData);
+                const childId = childSnapshot.key;
+
+                roomsList.push(
+                    {
+                        data: childData,
+                        id: childId
+                    }
+                )
             });
+
             this.setState({ rooms : roomsList });
         });
 
@@ -27,22 +38,18 @@ class Dashboard extends Component{
     render(){
         return(
             <div>
-                {
-                    this.state.rooms.length &&   
-                    (<div>
-                        <div className="container-fluid d-flex justify-content-center">
-                            <div className="row" id="courses">
-                                {
-                                    this.state.rooms.map(course => (
-                                        <div className="col-md-4">
-                                            <Card imgsrc={img1} course={course}/>
-                                        </div>
-                                    ))
-                                }
-                            </div>
+                {this.state.rooms.length &&   
+                (<div>
+                    <div className="container-fluid d-flex justify-content-center">
+                        <div className="row" id="courses">
+                            {this.state.rooms.map(room => (
+                                <div className="col-md-4">
+                                    <Card imgsrc={img1} room={room.data} id={room.id.replace('-','')}/>
+                                </div>
+                            ))}
                         </div>
-                    </div>)
-                }
+                    </div>
+                </div>)}
             </div>
         );
     }
