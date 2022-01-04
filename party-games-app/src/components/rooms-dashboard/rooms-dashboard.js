@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
-import Card from '../card/card';
-import './dashboard.css';
+import Card from '../room-card/room-card';
+import './rooms-dashboard.css';
 import img1 from './react-logo.png';
 import { database } from "../../firebase";
 

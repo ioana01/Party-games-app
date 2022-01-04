@@ -2,7 +2,7 @@ import React from "react";
 import { AuthProvider } from "./contexts/contexts";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/navbar/navbar";
-import Dashboard from './components/dashboard/dashboard';
+import Dashboard from './components/rooms-dashboard/rooms-dashboard';
 import PrivateRoute from "./components/private-route/private-route";
 import ExtendedInfo from "./components/extended-room-info/extended-room-info";
 
