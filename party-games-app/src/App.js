@@ -5,6 +5,8 @@ import Navbar from "./components/navbar/navbar";
 import Dashboard from './components/rooms-dashboard/rooms-dashboard';
 import PrivateRoute from "./components/private-route/private-route";
 import ExtendedInfo from "./components/extended-room-info/extended-room-info";
+import Login from "./components/Auth/Login/Login";
+import SignUp from "./components/Auth/SignUp/SignUp";
 
 function App() {
   return (
@@ -14,8 +16,10 @@ function App() {
           <AuthProvider>
             <Navbar/>
             <Switch>  
-              <Route exact path="/" component={Dashboard} />
-              <Route exact path="/room/:id" component={ExtendedInfo}/>
+              <Route exact path="/login" component={Login}/>
+              <Route exact path="/signup" component={SignUp}/>
+              <PrivateRoute exact path="/" component={Dashboard} />
+              <PrivateRoute exact path="/room/:id" component={ExtendedInfo}/>
             </Switch>
           </AuthProvider>
         </Router>

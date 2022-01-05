@@ -19,22 +19,22 @@ export default function SignUp() {
 
     async function handleSubmit(e) {
         e.preventDefault()
-
-        const userData = {
-            name: nameRef.current.value,
-            email: emailRef.current.value
-        }
-        database.ref('users').push(userData);
     
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
           return setError("Passwords do not match");
         }
     
         try {
-          setError("");
-          setLoading(true);
-          await signup(emailRef.current.value, passwordRef.current.value);
-          history.push("/");
+            const userData = {
+                name: nameRef.current.value,
+                email: emailRef.current.value
+            }
+            database.ref('users').push(userData);
+            
+            setError("");
+            setLoading(true);
+            await signup(emailRef.current.value, passwordRef.current.value);
+            history.push("/");
         } catch(error) {
             setError(error.message);
         }
