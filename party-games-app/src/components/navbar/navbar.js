@@ -18,6 +18,8 @@ export default function BootstrapNavbar() {
         setError("")
 
         try {
+            // TODO: daca e guest, se sterge intrarea din tabela `guests`
+            // TODO: si stergere din authentication (firebase -> Teodora)
             await logout();
         } catch {
             setError("Failed to log out");
