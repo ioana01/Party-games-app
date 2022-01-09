@@ -7,8 +7,6 @@ import './SignUp.css';
 
 export default function SignUp() {
     const nameRef = useRef();
-    const groupRef = useRef();
-    const userRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
@@ -29,7 +27,7 @@ export default function SignUp() {
                 name: nameRef.current.value,
                 email: emailRef.current.value
             }
-            database.ref('guests').push(userData);
+            database.ref('users').push(userData);
             
             setError("");
             setLoading(true);

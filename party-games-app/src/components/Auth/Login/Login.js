@@ -1,8 +1,10 @@
 import React, { useRef, useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
-import Popup from 'reactjs-popup';
-import { useAuth } from "../../../contexts/contexts";
 import { Link, useHistory } from "react-router-dom";
+import Popup from 'reactjs-popup';
+import randomString from 'random-string';
+import { useAuth } from "../../../contexts/contexts";
+import { database } from "../../../firebase";
 import 'reactjs-popup/dist/index.css';
 import './Login.css';
 
@@ -11,6 +13,7 @@ export default function Login() {
     const emailRef = useRef();
     const passwordRef = useRef(); 
     const { login } = useAuth();
+    const { signup } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const history = useHistory();
@@ -18,7 +21,7 @@ export default function Login() {
     const submitHandlers = {
         login: handleLogIn,
         guest: handleGuest,
-      }
+    }
    
     function handleSubmit(e) {
         e.preventDefault()
@@ -33,7 +36,7 @@ export default function Login() {
             setError("");
             setLoading(true);
             await login(emailRef.current.value, passwordRef.current.value);
-            history.push("/")
+            history.push("/");
         } catch(error) {
           setError(error.message);
         }
@@ -41,16 +44,51 @@ export default function Login() {
         setLoading(false);
     }
 
-    function handleGuest(e) {
+    async function handleGuest(e) {
         e.preventDefault();
-        // TODO: popup cu nume
-        // TODO: create new guest (parola: guest) intr-o tabela `guests`
-        // const guestData = {
-        //     name: nameRef.current.value
-        // }
-        // database.ref('users').push(userData);
-        // facem login
-        // redirectare catre `/`
+        setError("");
+        setLoading(true);
+
+        try {
+            const tempPass = randomString({length: 6})
+            const guestData = {
+                email: `${guestNameRef.current.value}@guest.com`
+            }
+
+            database.ref('guests').push(guestData);
+            await signup(guestData.email, tempPass);
+            history.push("/");
+        } catch(error) {
+            setError(error.message);
+        }
+
+        setLoading(false);
+    }
+
+    const renderGuestLogin = () => {
+        return (
+            <Popup 
+                trigger={
+                    <Button  
+                        disabled={loading} 
+                        className="w-100 auth-button" type="button" style={{backgroundColor: "#343a40"}}>
+                        Play as Guest
+                    </Button>} 
+                position="right center">
+                    <Form>
+                        <Form.Group id="guestName" style={{marginBottom: "20px"}}>
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control type="text" ref={guestNameRef} required />
+                        </Form.Group>
+                        <Button  
+                            id="guest"
+                            disabled={loading}
+                            className="w-100 auth-button" type="submit" style={{backgroundColor: "#343a40"}}>
+                            Play as Guest
+                        </Button>
+                    </Form>
+            </Popup>
+        )
     }   
 
     return (
@@ -78,27 +116,7 @@ export default function Login() {
                             Login
                         </Button>
 
-                        <Popup 
-                            trigger={
-                                <Button  
-                                    disabled={loading} 
-                                    className="w-100 auth-button" type="button" style={{backgroundColor: "#343a40"}}>
-                                    Play as Guest
-                                </Button>} 
-                            position="right center">
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group id="guestName" style={{marginBottom: "20px"}}>
-                                    <Form.Label>Name</Form.Label>
-                                    <Form.Control type="text" ref={guestNameRef} required />
-                                </Form.Group>
-                                <Button  
-                                    id="guest"
-                                    disabled={loading}
-                                    className="w-100 auth-button" type="submit" style={{backgroundColor: "#343a40"}}>
-                                    Play as Guest
-                                </Button>
-                            </Form>
-                        </Popup>
+                        {renderGuestLogin()}
                     </Form>
                 </Card.Body>
             </Card>
