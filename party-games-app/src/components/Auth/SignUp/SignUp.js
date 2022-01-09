@@ -29,7 +29,7 @@ export default function SignUp() {
                 name: nameRef.current.value,
                 email: emailRef.current.value
             }
-            database.ref('users').push(userData);
+            database.ref('guests').push(userData);
             
             setError("");
             setLoading(true);
