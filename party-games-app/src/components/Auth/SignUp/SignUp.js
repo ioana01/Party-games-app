@@ -7,8 +7,6 @@ import './SignUp.css';
 
 export default function SignUp() {
     const nameRef = useRef();
-    const groupRef = useRef();
-    const userRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
