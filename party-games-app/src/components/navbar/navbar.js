@@ -79,6 +79,8 @@ export default function BootstrapNavbar() {
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                                 <Navbar.Collapse id="basic-navbar-nav">
                                     <Nav className="ml-auto">
+                                        <Nav.Link href="/" >Dashboard</Nav.Link>
+                                        <Nav.Link href="/newRoom" >Create new room</Nav.Link>
                                         <Nav.Link onClick={handleLogout}>Log Out</Nav.Link>
                                     </Nav>
                                 </Navbar.Collapse>
