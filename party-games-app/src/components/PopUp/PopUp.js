@@ -13,33 +13,23 @@ function JoinRoom(props){
   async function handleSubmit(e) {
     e.preventDefault()
     try {
-      console.log("submit" + props.roomId);
-        setError("");
-        setLoading(true);
-        /*await login(emailRef.current.value, passwordRef.current.value);
-        if(CheckIfUserIsAdmin(emailRef.current.value)) {
-            history.push("/admin")
-        }
-        else {
-            history.push("/")
-        } */
-        await database.ref('rooms').once('value', snapshot => {
-          snapshot.forEach(childSnapshot => {
-              if (childSnapshot.key == props.roomId) {
-                const childData = childSnapshot.val();
-                console.log(passwordRef.current.value);
-                console.log(childData["password"]);
-                if (passwordRef.current.value == childData["password"]){
-                  console.log("correct password");
-                  {props.handleClose()}
-                  {props.joinRoom()}
-                } else {
-                  setError("Incorrect password!");
+      setError("");
+      setLoading(true);
+      
+      await database.ref('rooms').once('value', snapshot => {
+        snapshot.forEach(childSnapshot => {
+          if (childSnapshot.key === props.roomId) {
+            const childData = childSnapshot.val();
 
-                }
-              }
-          });
+            if (passwordRef.current.value == childData["password"]){
+              props.handleClose();
+              props.joinRoom();
+            } else {
+              setError("Incorrect password!");
+            }
+          }
         });
+      });
 
     } catch(error) {
       setError(error.message);
@@ -50,15 +40,16 @@ function JoinRoom(props){
   return (
     <div>
       <div>
-      <h4 className="popup-title">This is a private room!</h4>
+        <h4 className="popup-title">This is a private room!</h4>
       </div>
+
       <Card id='card-container-login'>
         <Card.Body>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form onSubmit={handleSubmit}>
               <Form.Group id="password" style={{marginBottom: "20px"}}>
-                  <Form.Label style = {{color:"black"}}>Room password</Form.Label>
-                  <Form.Control type="password" ref={passwordRef} required />
+                <Form.Label style = {{color:"black"}}>Room password</Form.Label>
+                <Form.Control type="password" ref={passwordRef} required />
               </Form.Group>
 
               <Button 

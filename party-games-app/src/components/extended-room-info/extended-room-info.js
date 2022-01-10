@@ -19,7 +19,7 @@ class ExtendedInfo extends Component {
     }
   
     togglePopupOpen = (e) => {
-        if (this.state.isOpen == false){
+        if (this.state.isOpen == false) {
             this.setState({ isOpen: true });
         }
     }
@@ -30,8 +30,8 @@ class ExtendedInfo extends Component {
   
     joinRoom = (e) => {
         let playersList = this.state.roomInfo.players;
+
         playersList.push({'name': auth.currentUser.email, 'score': 0});
-        console.log(playersList);
         database.ref('/rooms').child(this.state.roomId).update({'players': playersList});
         database.ref('/rooms').child(this.state.roomId).update({'current_users_number': this.state.roomInfo.current_users_number + 1});
         this.componentDidMount();
@@ -39,27 +39,29 @@ class ExtendedInfo extends Component {
 
     exitRoom = (e) => {
         let playersList = this.state.roomInfo.players;
-        for( var i = 0; i < playersList.length; i++){ 
-    
+
+        for(let i = 0; i < playersList.length; i++){ 
             if ( playersList[i].name === auth.currentUser.email) { 
-        
                 playersList.splice(i, 1); 
             }
-        
         }
-        console.log(playersList);
+
         database.ref('/rooms').child(this.state.roomId).update({'players': playersList});
         database.ref('/rooms').child(this.state.roomId).update({'current_users_number': this.state.roomInfo.current_users_number - 1});
         this.componentDidMount();
     }
+
     checkIfInRoom() {
         let playersList = [];
+
         if(this.state.roomInfo && this.state.roomInfo.players) {
             const players = this.state.roomInfo.players;
+
             playersList = players.map((player) => {return player.name})
             if (playersList.indexOf(auth.currentUser.email) > -1){
                 return true;
             }
+
             return false;
         }
     }
@@ -85,6 +87,7 @@ class ExtendedInfo extends Component {
 
     render() {
         let playersList;
+
         if(this.state.roomInfo && this.state.roomInfo.players) {
             const players = this.state.roomInfo.players;
             playersList = players.map((player) => <li className="card-text text-secondary">{player.name}: {player.score} points</li>)
@@ -140,7 +143,7 @@ class ExtendedInfo extends Component {
                                                 button = "Join room"
                                                 roomId = {this.state.roomId} 
                                                 joinRoom = {this.joinRoom}/>
-                                            Join Room
+                                                Join Room
                                             </Button>
                                         </div>
                                     )
