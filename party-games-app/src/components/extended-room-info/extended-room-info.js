@@ -6,7 +6,7 @@ import MyPopUp from "../PopUp/PopUp";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { Card, Form, Button, Alert } from "react-bootstrap";
-
+import PlayerOption from '../player-option/player-option';
 class ExtendedInfo extends Component {
     constructor(props) {
         super(props);
@@ -117,7 +117,14 @@ class ExtendedInfo extends Component {
                                 return (
                                     <div>
                                         <Button className="btn btn-outline-success join-game-btn" onClick={(e) => this.exitRoom(e)}> Exit room </Button>
-                                        <Link className="btn btn-outline-success join-game-btn" to={{pathname: `/game/`}}> Start game </Link>
+                                        <Button className="btn btn-outline-success join-game-btn" onClick={(e) => this.togglePopupOpen(e)}>
+                                            <PlayerOption
+                                                trigger = {this.state.isOpen}
+                                                handleClose = {this.handleClose}
+                                                button = "Join room"
+                                                roomId = {this.state.roomId}/>
+                                                Start game
+                                        </Button>
                                     </div>
                                 )
                             } else {
@@ -137,13 +144,13 @@ class ExtendedInfo extends Component {
                                     return (
                                         <div>
                                             <Button className="btn btn-outline-success join-game-btn" onClick={(e) => this.togglePopupOpen(e)}>
-                                            <MyPopUp 
-                                                trigger = {this.state.isOpen}
-                                                handleClose = {this.handleClose}
-                                                button = "Join room"
-                                                roomId = {this.state.roomId} 
-                                                joinRoom = {this.joinRoom}/>
-                                                Join Room
+                                                <MyPopUp 
+                                                    trigger = {this.state.isOpen}
+                                                    handleClose = {this.handleClose}
+                                                    button = "Join room"
+                                                    roomId = {this.state.roomId} 
+                                                    joinRoom = {this.joinRoom}/>
+                                                    Join Room
                                             </Button>
                                         </div>
                                     )
