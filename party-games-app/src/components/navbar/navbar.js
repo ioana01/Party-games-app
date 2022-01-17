@@ -5,15 +5,24 @@ import { useAuth } from "../../contexts/contexts";
 import { auth, database } from "../../firebase";
 import './navbar.css';
 import { CheckIfUserIsGuest, verifyGuest } from '../../utils/utils';
+import usePWA from 'react-pwa-install-prompt'
 
 export default function BootstrapNavbar() {
     const { logout } = useAuth();
+    const { isStandalone, isInstallPromptSupported, promptInstall } = usePWA();
     const [error, setError] = useState("")
     let email = undefined;
 
     if(auth.currentUser != null) {
         email = auth.currentUser.email
     }
+
+    const onClickInstall = async () => {
+        const didInstall = await promptInstall()
+        if (didInstall) {
+          console.log('Install Successful!');
+        }
+      }
 
     async function handleLogout() {
         setError("");
@@ -69,6 +78,32 @@ export default function BootstrapNavbar() {
             setError("Failed to log out");
         }
     }
+    console.log(isInstallPromptSupported);
+    console.log(isStandalone);
+    if (isInstallPromptSupported && !isStandalone) {
+        return(
+            <div className='navbar-div'>
+                <div className="row">
+                    <div className="col-md-12" id='navbar-container'>
+                        <Router>
+                            <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
+                                <Navbar.Brand to="#home">Party games app</Navbar.Brand>
+                                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                                    <Navbar.Collapse id="basic-navbar-nav">
+                                        <Nav className="ml-auto">
+                                            <Nav.Link href="/" >Dashboard</Nav.Link>
+                                            <Nav.Link href="/newRoom" >Create new room</Nav.Link>
+                                            <Nav.Link onClick={handleLogout}>Log Out</Nav.Link>
+                                            <Nav.Link onClick={onClickInstall}>Add to Screen</Nav.Link>
+                                        </Nav>
+                                    </Navbar.Collapse>
+                            </Navbar>
+                        </Router>
+                    </div>
+                </div>
+            </div>
+        )  
+    }
 
     return(
         <div className='navbar-div'>
@@ -91,4 +126,6 @@ export default function BootstrapNavbar() {
             </div>
         </div>
     )  
+
+   
 }
