@@ -45,20 +45,20 @@ function JoinRoom(props){
 
       <Card id='card-container-login'>
         <Card.Body>
-            {error && <Alert variant="danger">{error}</Alert>}
-            <Form onSubmit={handleSubmit}>
-              <Form.Group id="password" style={{marginBottom: "20px"}}>
-                <Form.Label style = {{color:"black"}}>Room password</Form.Label>
-                <Form.Control type="password" ref={passwordRef} required />
-              </Form.Group>
+          {error && <Alert variant="danger">{error}</Alert>}
+          <Form onSubmit={handleSubmit}>
+            <Form.Group id="password" style={{marginBottom: "20px"}}>
+              <Form.Label style = {{color:"black"}}>Room password</Form.Label>
+              <Form.Control type="password" ref={passwordRef} required />
+            </Form.Group>
 
-              <Button 
-                  id="join room" 
-                  disabled={loading} 
-                  className="w-100 auth-button" type="submit" style={{backgroundColor: "#343a40"}}>
-                  Join Room
-              </Button>
-            </Form>
+            <Button 
+                id="join room" 
+                disabled={loading} 
+                className="w-100 auth-button" type="submit" style={{backgroundColor: "#343a40"}}>
+                Join Room
+            </Button>
+          </Form>
         </Card.Body>
       </Card>
     </div>

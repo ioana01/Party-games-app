@@ -1,0 +1,18 @@
+.trivia-container {
+    width: 60%;
+    margin: auto;
+    margin-top: 80px;
+    padding: 20px;
+}
+
+.red-answer {
+    background-color: red;
+}
+
+.green-answer {
+    background-color: green;
+}
+
+.start {
+    margin-bottom: 20px;
+}
