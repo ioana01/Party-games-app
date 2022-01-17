@@ -32,14 +32,15 @@ export default function NewRoom() {
 
         try {
             const userData = {
-                name:roomnameRef.current.value,
-                type : typeRef.current.value,
-                admin_name : adminnameRef.current.value,
-                max_users_number :  max_users_numberRef.current.value,
-                password : passwordRef.current.value,
+                name: roomnameRef.current.value,
+                type: typeRef.current.value,
+                admin_name: adminnameRef.current.value,
+                max_users_number:  max_users_numberRef.current.value,
+                password: passwordRef.current.value,
                 game: 'trivia',
                 state: 'lobby',
-                current_users_number: 0
+                current_users_number: 0,
+                players: []
             }
             database.ref('rooms').push(userData);
 
