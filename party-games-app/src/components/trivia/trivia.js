@@ -30,7 +30,6 @@ const TriviaGame = (props) => {
     
                         players.map(player => {
                             if(player.name === auth.currentUser.email) {
-                                alert("player");
                                 setPlayer(true);
                             }
                         })
@@ -57,10 +56,8 @@ const TriviaGame = (props) => {
     const checkAnswer = (e) => {
         if (!gameOver) {
             const buttons = Array.prototype.slice.call(document.getElementsByClassName('answer'));
-            console.log(buttons);
 
             buttons.map(button => {
-                console.log(button.value);
                 if(button.value === questions[number].correct_answer) {
                     button.classList.add('green-answer');
                 } else {
@@ -85,12 +82,15 @@ const TriviaGame = (props) => {
         }
     };
 
+    const exitTrivia = () => {
+        window.location = '/';
+    }
+
     const nextQuestion = () => {
         const nextQ = number + 1;
         const buttons = Array.prototype.slice.call(document.getElementsByClassName('answer'));
 
         buttons.map(button => {
-            console.log(button.value);
             if(button.value === questions[number].correct_answer) {
                 button.classList.remove('green-answer');
             } else {
@@ -109,9 +109,10 @@ const TriviaGame = (props) => {
         <div className='trivia-container'>
             <h1>QUIZ</h1>
             {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
-            <button className='start' onClick={startTrivia}>
-                Start
-            </button>
+            <>
+                <button className='start' onClick={startTrivia}> Start </button>
+                <button onClick={exitTrivia}> Exit </button>
+            </>
             ) : null}
 
             {!gameOver ? 

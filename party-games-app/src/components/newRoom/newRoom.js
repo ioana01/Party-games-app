@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import React, { useRef, useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap"; 
 import { Link, useHistory } from "react-router-dom";
-import { database } from "../../firebase";
+import { database, auth } from "../../firebase";
 import '../Auth/SignUp/SignUp';
 import './newRoom.css';
 
@@ -36,11 +36,18 @@ export default function NewRoom() {
                 type: typeRef.current.value,
                 admin_name: adminnameRef.current.value,
                 max_users_number:  max_users_numberRef.current.value,
-                password: passwordRef.current.value,
+                password: passwordRef.current ? passwordRef.current.value : '',
                 game: 'trivia',
                 state: 'lobby',
                 current_users_number: 0,
-                players: []
+                audience_number: 0,
+                audience_score: 0,
+                players: [
+                    {
+                        name: auth.currentUser.email,
+                        score: 0
+                    }
+                ]
             }
             database.ref('rooms').push(userData);
 
