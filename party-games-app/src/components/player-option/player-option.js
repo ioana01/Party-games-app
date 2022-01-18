@@ -25,10 +25,10 @@ const PlayerOption = (props) => {
             });
         });
 
-        currentUsersNumber++;
-        console.log(currentUsersNumber);
+        currentUsersNumber++
         players.push({name: auth.currentUser.email, score: 0});
         database.ref('/rooms').child(props.roomId).update({'players': players, 'current_users_number': currentUsersNumber});
+        database.ref('/rooms').child(props.roomId).update({'state': 'started'});
     }
 
     const addSpectator = async () => {
@@ -48,6 +48,7 @@ const PlayerOption = (props) => {
 
         audience++;
         database.ref('/rooms').child(props.roomId).update({'audience_number': audience});
+        database.ref('/rooms').child(props.roomId).update({'state': 'started'});
     }
 
     return (props.trigger) ? (

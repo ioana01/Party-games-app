@@ -29,7 +29,7 @@ class ExtendedInfo extends Component {
     }
   
     joinRoom = (e) => {
-        let playersList = this.state.roomInfo.players;
+        let playersList = this.state.roomInfo.players ? this.state.roomInfo.players : [];
 
         playersList.push({'name': auth.currentUser.email, 'score': 0});
         database.ref('/rooms').child(this.state.roomId).update({'players': playersList});
@@ -113,6 +113,16 @@ class ExtendedInfo extends Component {
                 <div className='join-game-btn-container'>
                     {(() => {
                         if (this.checkIfInRoom()){
+                            if(this.state.roomInfo.state === 'started') {
+                                return (
+                                    <PlayerOption
+                                        trigger = {true}
+                                        handleClose = {this.handleClose}
+                                        button = "Join room"
+                                        roomId = {this.state.roomId}/>
+                                )
+                            }
+
                             if (this.state.roomInfo.admin_name == auth.currentUser.email){
                                 return (
                                     <div>
