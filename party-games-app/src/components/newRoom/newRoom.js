@@ -9,7 +9,6 @@ import './newRoom.css';
 export default function NewRoom() {
     
     const roomnameRef = useRef();
-    const adminnameRef = useRef();
     const max_users_numberRef = useRef();
     const passwordRef = useRef();
     const typeRef = useRef();
@@ -34,7 +33,7 @@ export default function NewRoom() {
             const userData = {
                 name: roomnameRef.current.value,
                 type: typeRef.current.value,
-                admin_name: adminnameRef.current.value,
+                admin_name: auth.currentUser.email,
                 max_users_number:  max_users_numberRef.current.value,
                 password: passwordRef.current ? passwordRef.current.value : '',
                 game: 'trivia',
@@ -72,10 +71,6 @@ export default function NewRoom() {
                         <Form.Group id="name">
                             <Form.Label>Room Name</Form.Label>
                             <Form.Control type="name" ref={roomnameRef} required />
-                        </Form.Group>
-                        <Form.Group id="admin_name">
-                            <Form.Label>Admin Name</Form.Label>
-                            <Form.Control type="admin_name" ref={adminnameRef} required />
                         </Form.Group>
                         <Form.Group id="max_users_number">
                             <Form.Label>Number of players</Form.Label>

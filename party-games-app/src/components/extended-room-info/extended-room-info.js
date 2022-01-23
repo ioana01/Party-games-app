@@ -7,6 +7,8 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import PlayerOption from '../player-option/player-option';
+import _ from "lodash";
+
 class ExtendedInfo extends Component {
     constructor(props) {
         super(props);
@@ -39,16 +41,34 @@ class ExtendedInfo extends Component {
 
     exitRoom = (e) => {
         let playersList = this.state.roomInfo.players;
+        let roomDeleted = false;
 
         for(let i = 0; i < playersList.length; i++){ 
-            if ( playersList[i].name === auth.currentUser.email) { 
-                playersList.splice(i, 1); 
+            const userName = playersList[i].name;
+
+            if (userName === auth.currentUser.email) { 
+                playersList.splice(i, 1);
+
+                // Choose different admin (if any, else delete room)
+                if(userName === this.state.roomInfo.admin_name) {
+                    if(playersList.length > 0) {
+                        const randomAdmin = _.sample(playersList);
+                        database.ref('/rooms').child(this.state.roomId).update({'admin_name': randomAdmin.name});
+                    } else {
+                        // delete room
+                        roomDeleted = true;
+                        database.ref('/rooms').child(this.state.roomId).remove();
+                        window.location = "/";
+                    }
+                }
             }
         }
 
-        database.ref('/rooms').child(this.state.roomId).update({'players': playersList});
-        database.ref('/rooms').child(this.state.roomId).update({'current_users_number': this.state.roomInfo.current_users_number - 1});
-        this.componentDidMount();
+        if(roomDeleted === false) {
+            database.ref('/rooms').child(this.state.roomId).update({'players': playersList});
+            database.ref('/rooms').child(this.state.roomId).update({'current_users_number': this.state.roomInfo.current_users_number - 1});
+            this.componentDidMount();
+        }
     }
 
     checkIfInRoom() {
