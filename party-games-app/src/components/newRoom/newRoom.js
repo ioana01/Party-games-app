@@ -38,7 +38,7 @@ export default function NewRoom() {
                 password: passwordRef.current ? passwordRef.current.value : '',
                 game: 'trivia',
                 state: 'lobby',
-                current_users_number: 0,
+                current_users_number: 1,
                 audience_number: 0,
                 audience_score: 0,
                 players: [
