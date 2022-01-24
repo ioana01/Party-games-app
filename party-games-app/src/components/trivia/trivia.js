@@ -15,6 +15,7 @@ const TriviaGame = (props) => {
     const [gameOver, setGameOver] = useState(true);
     const [isPlayer, setPlayer] = useState(false);
     const [checkOnce, setCheck] = useState(false);
+    const [players, setPlayers] = useState([]);
 
     useEffect(async () => {
         if(!checkOnce) {
@@ -27,6 +28,7 @@ const TriviaGame = (props) => {
     
                     if(childId === props.match.params.id) {
                         const players = childData.players;
+                        setPlayers(players);
     
                         players.map(player => {
                             if(player.name === auth.currentUser.email) {
@@ -83,6 +85,9 @@ const TriviaGame = (props) => {
     };
 
     const exitTrivia = () => {
+        players.find(player => player.name === auth.currentUser.email).score = score;
+        database.ref('/rooms').child(props.match.params.id).update({'state': "ended"});
+        database.ref('/rooms').child(props.match.params.id).update({'players': players});
         window.location = '/';
     }
 
